@@ -1,0 +1,20 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "dlx-solver"
+version = "0.1.0"
+description = "DLX-based Sudoku solver"
+readme = "README.md"
+license = { text = "MIT" }
+authors = [
+  { name = "Alexander Gardner" }
+]
+dependencies = [
+  "numpy>=1.21.6"
+]
+requires-python = ">=3.7"
+
+[tool.setuptools.packages.find]
+where = ["src"]
