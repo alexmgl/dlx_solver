@@ -1,6 +1,8 @@
 # DLX Solver
 
-**DLX Solver** is a **Python implementation** of Donald Knuth's **Dancing Links (DLX)** algorithm, an efficient method for solving exact cover problems. This repository applies DLX to **9x9 Sudoku puzzles**, transforming them into an exact cover problem and leveraging Knuth’s algorithm for fast and optimal solutions.
+**DLX Solver** is a **Python implementation** of Donald Knuth's **Dancing Links (DLX)** algorithm, which uses doubly linked lists to efficiently remove and re-add nodes during the search process. This approach is particularly effective for solving exact cover problems. In this repository, the DLX algorithm is applied to **9x9 Sudoku puzzles** by transforming them into an exact cover problem, enabling fast and optimal solutions.
+
+[Donald Knuth's DLX (Dancing Links)]([http://www-cs-faculty.stanford.edu/~knuth/dlx.html](https://arxiv.org/abs/cs/0011047))
 
 ![Language](https://img.shields.io/badge/language-Python-blue)
 ![Version](https://img.shields.io/badge/version-v0.1.0-brightgreen)
