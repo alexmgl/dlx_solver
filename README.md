@@ -50,7 +50,7 @@ board.solve(verbose=True)
 ```
 
 ## 📜 Example Output
-Once solved, the board is printed in a formatted Sudoku grid:
+Once solved, (if verbose=True) the board is printed in a formatted Sudoku grid:
 ```md
 Attempting to solve the board:
 ╔═══╤═══╤═══╦═══╤═══╤═══╦═══╤═══╤═══╗
