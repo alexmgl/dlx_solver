@@ -13,7 +13,10 @@ very_hard_board = [
 ]
 
 board = SudokuBoard(very_hard_board)
-board.solve()
+board.solve(verbose=True)
 
-print(board)
+
+board = SudokuBoard.generate_board(num_holes=10)
+board.solve(verbose=True)
+
 

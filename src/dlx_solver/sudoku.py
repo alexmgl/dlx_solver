@@ -3,6 +3,11 @@ import numpy as np
 from .dlx import DLXSudoku
 
 
+class NoSolutionFound(Exception):
+    """Exception raised when no valid solution is found for the Sudoku puzzle."""
+    pass
+
+
 class SudokuBoard:
 
     def __init__(self, board):
@@ -21,7 +26,6 @@ class SudokuBoard:
         if self.solved_board is not None:
             output += "\nSolved Board\n" + self.get_sudoku_string(self.solved_board)
         return output
-
 
     @staticmethod
     def is_solved(board):
@@ -87,13 +91,6 @@ class SudokuBoard:
             return False
         return True
 
-    def display(self):
-        """
-        Display the current working board in a formatted way.
-        """
-        for row in self.board:
-            print(" ".join(str(num) for num in row))
-
     def _can_place(self, row, col, num):
         """
         Check if it's valid to place `num` in cell (row, col).
@@ -134,7 +131,7 @@ class SudokuBoard:
         return True
 
     @classmethod
-    def generate_board(cls, num_holes=5):
+    def generate_board(cls, num_holes=10):
         # Start with an empty board.
         board = [[0 for _ in range(9)] for _ in range(9)]
         instance = cls(board)
@@ -154,20 +151,52 @@ class SudokuBoard:
 
         return instance
 
-    def solve(self):
+    @classmethod
+    def generate_bad_board(cls, num_holes=10):
+        """
+        Generate a Sudoku board filled with random numbers.
+        Note: This board does not guarantee a valid Sudoku solution and is designed for testing.
+        """
+        board = [[random.randint(1, 9) for _ in range(9)] for _ in range(9)]
+        instance = cls(board)
+
+        # Optionally remove cells (set them to 0) to create a puzzle.
+        if num_holes > 0:
+            holes = random.sample(range(81), num_holes)
+            for index in holes:
+                row = index // 9
+                col = index % 9
+                instance.board[row][col] = 0
+
+        # Update initial_board to reflect the randomly generated board.
+        instance.initial_board = instance.board.copy()
+        return instance
+
+    def solve(self, verbose=False):
         """
         Solve the Sudoku puzzle using the DLX algorithm and check the validity of the solution.
         The initial board (raw input with holes) is preserved.
-
-        :return: Solved board if a valid solution exists, None otherwise.
         """
+        try:
+            if verbose:
+                print("Attempting to solve the board:")
+                print(self.get_sudoku_string(self.initial_board))
 
-        solved_board = DLXSudoku(self.initial_board).solve()
+            solved_board = DLXSudoku(self.initial_board).solve()
+
+        except Exception as e:
+            raise NoSolutionFound("An error occurred while solving the Sudoku puzzle.") from e
+
+        if solved_board is None:
+            raise NoSolutionFound("Solver returned None as the solution.")
 
         if self.is_solved(solved_board):
             self.solved_board = solved_board
+            if verbose:
+                print("Solution found:")
+                print(self.get_sudoku_string(self.solved_board))
         else:
-            return None
+            raise NoSolutionFound("No valid solution found for the provided Sudoku board.")
 
         return solved_board
 
@@ -199,3 +228,4 @@ class SudokuBoard:
             else:
                 result += middle_border
         return result
+
